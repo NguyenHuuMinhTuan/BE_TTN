@@ -63,24 +63,19 @@ class AccountController {
     async updateActiveById(req, res) {
         try {
             const { id } = req.params;
-            const { active } = req.body;
-
-            if (!active) {
-                return res.status(400).json({ message: 'At least one field is required for update' });
-            }
-           
-            const updatedUser = { active};
-            const result = await Account.updateActive(id, updatedUser);
-
+            const result = await Account.remove(id); 
+    
             if (result?.affectedRows > 0) {
-                res.status(200).json({ message: 'Account active updated successfully' });
+                res.status(200).json({ message: "Account active updated successfully" });
             } else {
-                res.status(400).json({ message: 'Failed to update account active' });
+                res.status(400).json({ message: "Failed to update account active" });
             }
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
     }
+    
+    
 
     async deleteAccount(req, res) {
         try {

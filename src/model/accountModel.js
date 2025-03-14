@@ -32,23 +32,25 @@ const checkUser = async (username) => {
     return rows.length > 0 ? rows[0] : null;
 };
 const remove = async (id) => {
-  
-    let query = 'UPDATE account SET active = 0';
-    values=[]
-    query += ' WHERE id = ?';
-    values.push(id);
+    if (!id) {
+        throw new Error("ID is required to remove an account");
+    }
 
-    const [rows] = await pool.execute(query, values);
+    let query = 'UPDATE account SET active = 0 WHERE id = ?';
+    
+    const [rows] = await pool.execute(query, [id]); 
     return rows;
+};
 
+const updateActive = async (id, active) => {
+    const { act } = active;
+    let query = "UPDATE account SET active = ? WHERE id = ?";
+    
+    const [rows] = await pool.execute(query, [act, id]);
 
-}
-const updateActive = async(id,active)=>{
-    const{act}  = active
-    let query = "UPDATE account SET active = ? where id = ?"
-    const [rows] = await pool.execute(query, act, id);
     return rows;
-}
+};
+
 
 const update = async (id, updatedUser) => {
     const { username, password, email } = updatedUser;
