@@ -36,6 +36,7 @@ class AccountController {
     }
     
     async updateAccount(req, res) {
+        console.log("Dữ liệu nhận được:", req.body);
         try {
             const { id } = req.params;
             const { username, email, password } = req.body;
@@ -54,6 +55,27 @@ class AccountController {
                 res.status(200).json({ message: 'Account updated successfully' });
             } else {
                 res.status(400).json({ message: 'Failed to update account' });
+            }
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+    async updateActiveById(req, res) {
+        try {
+            const { id } = req.params;
+            const { active } = req.body;
+
+            if (!active) {
+                return res.status(400).json({ message: 'At least one field is required for update' });
+            }
+           
+            const updatedUser = { active};
+            const result = await Account.updateActive(id, updatedUser);
+
+            if (result?.affectedRows > 0) {
+                res.status(200).json({ message: 'Account active updated successfully' });
+            } else {
+                res.status(400).json({ message: 'Failed to update account active' });
             }
         } catch (error) {
             res.status(500).json({ message: error.message });

@@ -43,6 +43,12 @@ const remove = async (id) => {
 
 
 }
+const updateActive = async(id,active)=>{
+    const{act}  = active
+    let query = "UPDATE account SET active = ? where id = ?"
+    const [rows] = await pool.execute(query, act, id);
+    return rows;
+}
 
 const update = async (id, updatedUser) => {
     const { username, password, email } = updatedUser;
@@ -78,6 +84,7 @@ module.exports = {
     create,
     checkUser,
     update,
-    remove
+    remove,
+    updateActive
   
 };

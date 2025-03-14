@@ -16,7 +16,7 @@ class AuthController {
             // Lấy thông tin tài khoản từ database
             const account = await Account.getUsernameByAccount(username);
             const role = account.length > 0 ? account[0].type_account : null;
-            const id = account.length > 0? account[0].id : null;
+            const id = account.length > 0 ? account[0].id : null;
 
             if (!account || account.length === 0) {
                 console.log(`User not found: ${username}`);
@@ -40,10 +40,14 @@ class AuthController {
             }
 
             // Đăng nhập thành công -> Tạo token
-            const accessToken = auth.generateAccessToken({ username,role });
+            const accessToken = auth.generateAccessToken({ username, role });
 
             // Lưu token vào cookie
-            res.cookie('accessToken', accessToken, { httpOnly: true });
+            res.cookie('accessToken', accessToken, {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax",
+            });
 
             console.log("Login successful:", username);
 

@@ -76,8 +76,20 @@ class cartController {
                 res.status(500).send("Lỗi server!");
             });
     }
-
-
+    clearCartById(req, res) {
+        const { account_id } = req.params;
+        cartModel.deleteMany({ account_id })
+            .then(cart => {
+                if (!cart) {
+                    return res.status(404).send("Không tìm thấy giỏ hàng!");
+                }
+                res.status(200).send({ message: "Đã xóa thành công giỏ hàng!" });
+            })
+            .catch(error => {
+                console.error(error);
+                res.status(500).send("Lỗi server!");
+            });
+    }
 
     updateCartById(req, res) {
         const { id } = req.params;

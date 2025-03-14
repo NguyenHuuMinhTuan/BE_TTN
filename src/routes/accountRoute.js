@@ -9,6 +9,8 @@ router.post('/',accountControlller.createAccount);
 
 router.put('/:id', accountControlller.updateAccount); 
 
+router.put('/active/:id',accountControlller.updateActiveById);
+
 router.post('/:id', accountControlller.deleteAccount);
 
 module.exports = router;
